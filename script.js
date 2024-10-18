@@ -1,59 +1,60 @@
 let mediaRecorder;
-let audioChunks = [];
+let recordedChunks = [];
 
-function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
+// 获取音频输入权限
+async function startRecording() {
+    // 获取麦克风音频
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            mediaRecorder.ondataavailable = event => {
-                audioChunks.push(event.data);
-            };
-
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                const audioURL = URL.createObjectURL(audioBlob);
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = audioURL;
-
-                // 将生成的音频文件添加到音频容器
-                const audioContainer = document.getElementById('audioContainer');
-                audioContainer.innerHTML = ''; // 清空以前的音频
-                audioContainer.appendChild(audioElement);
-                
-                // Reset audioChunks for the next recording
-                audioChunks = [];
-            };
-
-            document.getElementById('status').textContent = '状态: 正在录音';
-            document.getElementById('recordingTime').textContent = '00:00:00';
-            // 开始计时
-            startTimer();
-        })
-        .catch(error => {
-            console.error("录音失败:", error);
-        });
-}
-
-function stopRecording() {
-    if (mediaRecorder) {
-        mediaRecorder.stop();
-        document.getElementById('status').textContent = '状态: 未录音';
+    // 检查浏览器支持的音频格式
+    let mimeType = '';
+    if (MediaRecorder.isTypeSupported('audio/webm')) {
+        mimeType = 'audio/webm';
+    } else if (MediaRecorder.isTypeSupported('audio/wav')) {
+        mimeType = 'audio/wav';
+    } else {
+        alert('您的浏览器不支持录音功能。');
+        return;
     }
+
+    // 创建 MediaRecorder 对象
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+    // 处理录音数据
+    mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    };
+
+    // 开始录音
+    mediaRecorder.start();
+    console.log('Recording started');
 }
 
-// 计时器
-let timerInterval;
-let seconds = 0;
+// 停止录音并保存音频文件
+function stopRecording() {
+    mediaRecorder.stop();
+    console.log('Recording stopped');
 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        seconds++;
-        const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
-        const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-        const secs = String(seconds % 60).padStart(2, '0');
-        document.getElementById('recordingTime').textContent = `${hours}:${minutes}:${secs}`;
-    }, 1000);
+    mediaRecorder.onstop = () => {
+        // 创建音频 Blob 对象
+        const audioBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = audioUrl;
+
+        // 清空已录制的数据
+        recordedChunks = [];
+
+        // 将音频元素添加到页面
+        const recordingsList = document.getElementById('recordingsList');
+        recordingsList.appendChild(audioElement);
+        console.log('Audio recording is available for playback');
+    };
 }
+
+// 绑定按钮事件
+document.getElementById('startButton').addEventListener('click', startRecording);
+document.getElementById('stopButton').addEventListener('click', stopRecording);
