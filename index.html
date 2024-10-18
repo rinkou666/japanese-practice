@@ -18,10 +18,20 @@
             height: 50px; /* 增加按钮高度，便于触控 */
         }
 
+        #buttonContainer {
+            display: flex; /* 使用 flexbox 布局 */
+            justify-content: space-between; /* 按钮之间留出空间 */
+            margin-bottom: 10px; /* 按钮和播放器之间的间距 */
+        }
+
         #status {
             margin-top: 20px;
             font-size: 20px;
             color: red;
+        }
+
+        button {
+            width: 48%; /* 按钮宽度设置为 48% 以便并排显示 */
         }
     </style>
 </head>
@@ -32,8 +42,10 @@
         你的浏览器不支持音频元素。
     </audio>
     <br>
-    <button id="startBtn" onclick="startRecording()">开始录音</button>
-    <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+    <div id="buttonContainer">
+        <button id="startBtn" onclick="startRecording()">开始录音</button>
+        <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+    </div>
     <div id="status">状态: 未录音</div>
     <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
 
