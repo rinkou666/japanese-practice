@@ -1,6 +1,8 @@
 let mediaRecorder;
 let recordedChunks = [];
 let waveSurfer;
+let recordingTimer; // 记录计时器
+let recordingTime = 0; // 录音时长
 
 // 初始化 Wavesurfer
 function initializeWaveSurfer() {
@@ -38,6 +40,7 @@ async function startRecording() {
     };
 
     mediaRecorder.onstop = () => {
+        clearInterval(recordingTimer); // 停止计时器
         const audioBlob = new Blob(recordedChunks);
         const audioUrl = URL.createObjectURL(audioBlob);
 
@@ -51,11 +54,18 @@ async function startRecording() {
 
         document.getElementById('status').textContent = '状态: 录音已停止';
         document.getElementById('startBtn').style.backgroundColor = ''; // 重置按钮颜色
+        document.getElementById('recordingTime').textContent = ''; // 重置录音时长
     };
 
     mediaRecorder.start();
     document.getElementById('status').textContent = '状态: 正在录音';
     document.getElementById('startBtn').style.backgroundColor = 'green'; // 设置按钮为绿色
+
+    recordingTime = 0; // 重置录音时长
+    recordingTimer = setInterval(() => {
+        recordingTime++;
+        document.getElementById('recordingTime').textContent = `录音时长: ${recordingTime}秒`;
+    }, 1000); // 每秒更新一次
 }
 
 function stopRecording() {
