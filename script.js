@@ -22,14 +22,18 @@ function startRecording() {
                 const audioContainer = document.getElementById('audioContainer');
                 audioContainer.innerHTML = ''; // 清空以前的音频
                 audioContainer.appendChild(audioElement);
-
-                audioChunks = []; // 清空音频块
+                
+                // Reset audioChunks for the next recording
+                audioChunks = [];
             };
 
             document.getElementById('status').textContent = '状态: 正在录音';
             document.getElementById('recordingTime').textContent = '00:00:00';
             // 开始计时
             startTimer();
+        })
+        .catch(error => {
+            console.error("录音失败:", error);
         });
 }
 
