@@ -1,77 +1,55 @@
 let mediaRecorder;
-let recordedChunks = [];
-let waveSurfer;
-let recordingTimer; // 记录计时器
-let recordingTime = 0; // 录音时长
+let audioChunks = [];
 
-// 初始化 Wavesurfer
-function initializeWaveSurfer() {
-    waveSurfer = WaveSurfer.create({
-        container: '#waveform',
-        waveColor: 'violet',
-        progressColor: 'purple',
-        height: 128,
-    });
-}
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
 
-initializeWaveSurfer();
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
 
-async function startRecording() {
-    // 请求麦克风权限
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioURL = URL.createObjectURL(audioBlob);
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = audioURL;
 
-    // 检查浏览器支持的音频格式
-    let mimeType = '';
-    if (MediaRecorder.isTypeSupported('audio/wav')) {
-        mimeType = 'audio/wav';
-    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-        mimeType = 'audio/webm';
-    } else {
-        alert('您的浏览器不支持录音功能。');
-        return;
-    }
+                // 将生成的音频文件添加到音频容器
+                const audioContainer = document.getElementById('audioContainer');
+                audioContainer.innerHTML = ''; // 清空以前的音频
+                audioContainer.appendChild(audioElement);
 
-    // 创建 MediaRecorder 实例
-    mediaRecorder = new MediaRecorder(stream, { mimeType });
-    recordedChunks = [];
+                audioChunks = []; // 清空音频块
+            };
 
-    mediaRecorder.ondataavailable = (event) => {
-        recordedChunks.push(event.data);
-    };
-
-    mediaRecorder.onstop = () => {
-        clearInterval(recordingTimer); // 停止计时器
-        const audioBlob = new Blob(recordedChunks);
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        // 加载波形到 Wavesurfer
-        waveSurfer.load(audioUrl);
-
-        const audioElement = document.createElement('audio');
-        audioElement.controls = true;
-        audioElement.src = audioUrl;
-        document.getElementById('audioContainer').appendChild(audioElement);
-
-        document.getElementById('status').textContent = '状态: 录音已停止';
-        document.getElementById('startBtn').style.backgroundColor = ''; // 重置按钮颜色
-        document.getElementById('recordingTime').textContent = '录音时长: 00:00'; // 重置录音时长
-    };
-
-    mediaRecorder.start();
-    document.getElementById('status').textContent = '状态: 正在录音';
-    document.getElementById('startBtn').style.backgroundColor = 'green'; // 设置按钮为绿色
-
-    recordingTime = 0; // 重置录音时长
-    recordingTimer = setInterval(() => {
-        recordingTime++;
-        const minutes = Math.floor(recordingTime / 60);
-        const seconds = recordingTime % 60;
-        document.getElementById('recordingTime').textContent = `录音时长: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // 显示时长
-    }, 1000); // 每秒更新一次
+            document.getElementById('status').textContent = '状态: 正在录音';
+            document.getElementById('recordingTime').textContent = '00:00:00';
+            // 开始计时
+            startTimer();
+        });
 }
 
 function stopRecording() {
     if (mediaRecorder) {
         mediaRecorder.stop();
+        document.getElementById('status').textContent = '状态: 未录音';
     }
+}
+
+// 计时器
+let timerInterval;
+let seconds = 0;
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        seconds++;
+        const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        document.getElementById('recordingTime').textContent = `${hours}:${minutes}:${secs}`;
+    }, 1000);
 }
