@@ -3,6 +3,12 @@ let recordedChunks = [];
 
 // 获取音频输入权限
 async function startRecording() {
+    // 检查浏览器是否支持获取用户媒体
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('您的浏览器不支持获取用户媒体设备。请使用支持的浏览器。');
+        return;
+    }
+
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -30,6 +36,7 @@ async function startRecording() {
     } catch (error) {
         console.error('Error accessing audio devices:', error);
         document.getElementById('status').textContent = '状态: 录音失败';
+        alert('无法访问麦克风，请检查设置。');
     }
 }
 
