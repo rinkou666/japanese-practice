@@ -1,84 +1,77 @@
 let mediaRecorder;
 let recordedChunks = [];
-let recordingTimer;
-let recordingTime = 0;
+let waveSurfer;
+let recordingTimer; // 记录计时器
+let recordingTime = 0; // 录音时长
 
-// 格式化时间显示
-function formatTime(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-    
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+// 初始化 Wavesurfer
+function initializeWaveSurfer() {
+    waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        height: 128,
+    });
 }
 
+initializeWaveSurfer();
+
 async function startRecording() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        
-        // 检查浏览器支持的音频格式
-        let mimeType = '';
-        if (MediaRecorder.isTypeSupported('audio/wav')) {
-            mimeType = 'audio/wav';
-        } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-            mimeType = 'audio/webm';
-        } else {
-            alert('您的浏览器不支持录音功能。');
-            return;
-        }
-        
-        mediaRecorder = new MediaRecorder(stream, { mimeType });
-        recordedChunks = [];
-        
-        mediaRecorder.ondataavailable = (event) => {
-            if (event.data.size > 0) {
-                recordedChunks.push(event.data);
-            }
-        };
-        
-        mediaRecorder.onstop = () => {
-            clearInterval(recordingTimer);
-            const audioBlob = new Blob(recordedChunks, { type: mimeType });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            
-            const audioElement = document.createElement('audio');
-            audioElement.controls = true;
-            audioElement.src = audioUrl;
-            
-            // 清除之前的录音
-            const audioContainer = document.getElementById('audioContainer');
-            audioContainer.innerHTML = '<h3>录音文件:</h3>';
-            audioContainer.appendChild(audioElement);
-            
-            document.getElementById('status').textContent = '状态: 录音已停止';
-            document.getElementById('startBtn').style.backgroundColor = '#94a3b8';
-            
-            // 停止所有音轨
-            stream.getTracks().forEach(track => track.stop());
-        };
-        
-        // 开始录音
-        mediaRecorder.start();
-        document.getElementById('status').textContent = '状态: 正在录音';
-        document.getElementById('startBtn').style.backgroundColor = '#7d8a9b';
-        
-        // 重置并启动计时器
-        recordingTime = 0;
-        document.getElementById('recordingTime').textContent = formatTime(recordingTime);
-        
-        recordingTimer = setInterval(() => {
-            recordingTime++;
-            document.getElementById('recordingTime').textContent = formatTime(recordingTime);
-        }, 1000);
-        
-    } catch (err) {
-        console.error('录音失败:', err);
-        alert('录音失败: ' + err.message);
+    // 请求麦克风权限
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    // 检查浏览器支持的音频格式
+    let mimeType = '';
+    if (MediaRecorder.isTypeSupported('audio/wav')) {
+        mimeType = 'audio/wav';
+    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+        mimeType = 'audio/webm';
+    } else {
+        alert('您的浏览器不支持录音功能。');
+        return;
     }
+
+    // 创建 MediaRecorder 实例
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
+    recordedChunks = [];
+
+    mediaRecorder.ondataavailable = (event) => {
+        recordedChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+        clearInterval(recordingTimer); // 停止计时器
+        const audioBlob = new Blob(recordedChunks);
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        // 加载波形到 Wavesurfer
+        waveSurfer.load(audioUrl);
+
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = audioUrl;
+        document.getElementById('audioContainer').appendChild(audioElement);
+
+        document.getElementById('status').textContent = '状态: 录音已停止';
+        document.getElementById('startBtn').style.backgroundColor = ''; // 重置按钮颜色
+        document.getElementById('recordingTime').textContent = '录音时长: 00:00'; // 重置录音时长
+    };
+
+    mediaRecorder.start();
+    document.getElementById('status').textContent = '状态: 正在录音';
+    document.getElementById('startBtn').style.backgroundColor = 'green'; // 设置按钮为绿色
+
+    recordingTime = 0; // 重置录音时长
+    recordingTimer = setInterval(() => {
+        recordingTime++;
+        const minutes = Math.floor(recordingTime / 60);
+        const seconds = recordingTime % 60;
+        document.getElementById('recordingTime').textContent = `录音时长: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // 显示时长
+    }, 1000); // 每秒更新一次
 }
 
 function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    if (mediaRecorder) {
         mediaRecorder.stop();
     }
 }
