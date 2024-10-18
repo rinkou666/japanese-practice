@@ -11,20 +11,20 @@
             padding: 10px;
             background-color: #f8f6f4;
         }
-
+        
         button, audio {
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 10px;
             height: 50px;
         }
-
+        
         #status {
             margin-top: 20px;
             font-size: 20px;
             color: #a19c97;
         }
-
+        
         #recordingTime {
             font-family: 'Courier New', monospace;
             font-size: 24px;
@@ -37,39 +37,14 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             color: #6c6960;
         }
-
-        #startBtn, #stopBtn {
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #startBtn {
-            background-color: #94a3b8; /* 莫兰迪蓝灰色 */
-        }
-
-        #stopBtn {
-            background-color: #b4a7a7; /* 莫兰迪红灰色 */
-        }
-
-        #startBtn:hover {
-            background-color: #7d8a9b; /* 深一点的蓝灰色 */
-        }
-
-        #stopBtn:hover {
-            background-color: #9b8e8e; /* 深一点的红灰色 */
-        }
-
+        
         #audioContainer {
             margin-top: 20px;
             padding: 10px;
             background-color: #e8e6e1;
             border-radius: 5px;
         }
-
+        
         h1 {
             color: #6c6960;
             text-align: center;
@@ -79,19 +54,19 @@
 </head>
 <body>
     <h1>日语跟读练习</h1>
-
+    
     <audio id="audioPlayer" controls>
         <source src="example.mp3" type="audio/mpeg">
         你的浏览器不支持音频元素。
     </audio>
-
+    
     <button id="startBtn" onclick="startRecording()">开始录音</button>
     <button id="stopBtn" onclick="stopRecording()">停止录音</button>
-
+    
     <div id="status">状态: 未录音</div>
-    <div id="recordingTime">录音时长: 00:00</div>
+    <div id="recordingTime">00:00:00</div>
     <div id="audioContainer"></div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
