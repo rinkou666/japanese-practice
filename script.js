@@ -43,7 +43,6 @@ async function startRecording() {
 // 停止录音并保存音频文件
 function stopRecording() {
     mediaRecorder.stop();
-    console.log('Recording stopped');
 
     mediaRecorder.onstop = () => {
         const audioBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
@@ -52,13 +51,15 @@ function stopRecording() {
         audioElement.controls = true;
         audioElement.src = audioUrl;
 
-        recordedChunks = [];
+        recordedChunks = []; // 清空已录制的音频片段
 
         // 将音频元素添加到页面
         const audioContainer = document.getElementById('audioContainer');
         audioContainer.appendChild(audioElement);
         document.getElementById('status').textContent = '状态: 录音完成';
-        console.log('Audio recording is available for playback');
+
+        // 调试信息
+        console.log('Audio recording is available for playback:', audioUrl);
     };
 }
 
