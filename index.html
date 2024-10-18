@@ -6,111 +6,37 @@
     <title>日语跟读练习</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background-color: #f8f6f4;
+            font-family: Arial, sans-serif; /* 使用一种更通用的字体 */
+            margin: 0; /* 清除默认边距 */
+            padding: 10px; /* 增加一些内边距 */
         }
-        
+
         button, audio {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            height: 50px;
+            width: 100%; /* 让按钮和音频播放器在小屏幕上全宽 */
+            box-sizing: border-box; /* 确保内边距和边框在宽度计算中 */
+            margin-bottom: 10px; /* 增加按钮和播放器之间的间距 */
+            height: 50px; /* 增加按钮高度，便于触控 */
         }
-        
+
         #status {
             margin-top: 20px;
             font-size: 20px;
-            color: #a19c97;
-        }
-        
-        #recordingsList {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e8e6e1;
-            border-radius: 5px;
-        }
-        
-        h1 {
-            color: #6c6960;
-            text-align: center;
-            margin-bottom: 20px;
+            color: red;
         }
     </style>
 </head>
 <body>
     <h1>日语跟读练习</h1>
-    
-    <button id="startButton">开始录音</button>
-    <button id="stopButton">停止录音</button>
-    
+    <audio id="audioPlayer" controls>
+        <source src="example.mp3" type="audio/mpeg">
+        你的浏览器不支持音频元素。
+    </audio>
+    <br>
+    <button id="startBtn" onclick="startRecording()">开始录音</button>
+    <button id="stopBtn" onclick="stopRecording()">停止录音</button>
     <div id="status">状态: 未录音</div>
-    <div id="recordingsList"></div> <!-- 用于显示录音的音频播放器 -->
-    
-    <script>
-        let mediaRecorder;
-        let recordedChunks = [];
+    <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
 
-        // 获取音频输入权限
-        async function startRecording() {
-            // 获取麦克风音频
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-            // 检查浏览器支持的音频格式
-            let mimeType = '';
-            if (MediaRecorder.isTypeSupported('audio/webm')) {
-                mimeType = 'audio/webm';
-            } else if (MediaRecorder.isTypeSupported('audio/wav')) {
-                mimeType = 'audio/wav';
-            } else {
-                alert('您的浏览器不支持录音功能。');
-                return;
-            }
-
-            // 创建 MediaRecorder 对象
-            mediaRecorder = new MediaRecorder(stream, { mimeType });
-
-            // 处理录音数据
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
-            };
-
-            // 开始录音
-            mediaRecorder.start();
-            console.log('Recording started');
-            document.getElementById('status').textContent = '状态: 正在录音';
-        }
-
-        // 停止录音并保存音频文件
-        function stopRecording() {
-            mediaRecorder.stop();
-            console.log('Recording stopped');
-
-            mediaRecorder.onstop = () => {
-                // 创建音频 Blob 对象
-                const audioBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = audioUrl;
-
-                // 清空已录制的数据
-                recordedChunks = [];
-
-                // 将音频元素添加到页面
-                const recordingsList = document.getElementById('recordingsList');
-                recordingsList.appendChild(audioElement);
-                console.log('Audio recording is available for playback');
-                document.getElementById('status').textContent = '状态: 未录音';
-            };
-        }
-
-        // 绑定按钮事件
-        document.getElementById('startButton').addEventListener('click', startRecording);
-        document.getElementById('stopButton').addEventListener('click', stopRecording);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
