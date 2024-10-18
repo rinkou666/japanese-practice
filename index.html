@@ -6,38 +6,93 @@
     <title>日语跟读练习</title>
     <style>
         body {
-            font-family: Arial, sans-serif; /* 使用一种更通用的字体 */
-            margin: 0; /* 清除默认边距 */
-            padding: 10px; /* 增加一些内边距 */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
         }
-
+        
         button, audio {
-            width: 100%; /* 让按钮和音频播放器在小屏幕上全宽 */
-            box-sizing: border-box; /* 确保内边距和边框在宽度计算中 */
-            margin-bottom: 10px; /* 增加按钮和播放器之间的间距 */
-            height: 50px; /* 增加按钮高度，便于触控 */
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            height: 50px;
         }
-
+        
         #status {
             margin-top: 20px;
             font-size: 20px;
             color: red;
         }
+        
+        /* 新增计时器样式 */
+        #recordingTime {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 录音按钮样式优化 */
+        #startBtn, #stopBtn {
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #startBtn {
+            background-color: #4CAF50;
+        }
+        
+        #stopBtn {
+            background-color: #f44336;
+        }
+        
+        #startBtn:hover {
+            background-color: #45a049;
+        }
+        
+        #stopBtn:hover {
+            background-color: #da190b;
+        }
+        
+        /* 音频容器样式 */
+        #audioContainer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>日语跟读练习</h1>
+    
     <audio id="audioPlayer" controls>
         <source src="example.mp3" type="audio/mpeg">
         你的浏览器不支持音频元素。
     </audio>
-    <br>
+    
     <button id="startBtn" onclick="startRecording()">开始录音</button>
     <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+    
     <div id="status">状态: 未录音</div>
-    <div id="recordingTime">录音时长: 0秒</div> <!-- 用于显示录音时长 -->
-    <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
-
+    <div id="recordingTime">00:00:00</div>
+    <div id="audioContainer"></div>
+    
     <script src="script.js"></script>
 </body>
 </html>
