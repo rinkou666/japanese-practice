@@ -6,21 +6,20 @@
     <title>日语跟读练习</title>
     <style>
         body {
-            font-family: Arial, sans-serif; /* 使用一种更通用的字体 */
-            margin: 0; /* 清除默认边距 */
-            padding: 10px; /* 增加一些内边距 */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
         }
 
-        button, audio {
-            width: 100%; /* 让按钮和音频播放器在小屏幕上全宽 */
-            box-sizing: border-box; /* 确保内边距和边框在宽度计算中 */
-            margin-bottom: 10px; /* 增加按钮和播放器之间的间距 */
-            height: 50px; /* 增加按钮高度，便于触控 */
+        button {
+            height: 50px; /* 增加按钮高度 */
+            width: 48%; /* 按钮宽度设置为 48% */
+            margin: 0 1%; /* 按钮之间的间距 */
         }
 
         #buttonContainer {
             display: flex; /* 使用 flexbox 布局 */
-            justify-content: space-between; /* 按钮之间留出空间 */
+            justify-content: center; /* 按钮居中对齐 */
             margin-bottom: 10px; /* 按钮和播放器之间的间距 */
         }
 
@@ -28,10 +27,6 @@
             margin-top: 20px;
             font-size: 20px;
             color: red;
-        }
-
-        button {
-            width: 48%; /* 按钮宽度设置为 48% 以便并排显示 */
         }
     </style>
 </head>
