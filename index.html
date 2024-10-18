@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日语跟读练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* 使用一种更通用的字体 */
+            margin: 0; /* 清除默认边距 */
+            padding: 10px; /* 增加一些内边距 */
+        }
+
+        button, audio {
+            width: 100%; /* 让按钮和音频播放器在小屏幕上全宽 */
+            box-sizing: border-box; /* 确保内边距和边框在宽度计算中 */
+            margin-bottom: 10px; /* 增加按钮和播放器之间的间距 */
+            height: 50px; /* 增加按钮高度，便于触控 */
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>日语跟读练习</h1>
+    <audio id="audioPlayer" controls>
+        <source src="example.mp3" type="audio/mpeg">
+        你的浏览器不支持音频元素。
+    </audio>
+    <br>
+    <button id="startBtn" onclick="startRecording()">开始录音</button>
+    <button id="stopBtn" onclick="stopRecording()">停止录音</button>
+    <div id="status">状态: 未录音</div>
+    <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
+
+    <script src="script.js"></script>
+</body>
+</html>
