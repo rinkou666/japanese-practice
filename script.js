@@ -1,7 +1,19 @@
 let mediaRecorder;
 let recordedChunks = [];
+let waveSurfer;
 
-// 获取音频输入权限
+// 初始化 Wavesurfer
+function initializeWaveSurfer() {
+    waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        height: 128,
+    });
+}
+
+initializeWaveSurfer();
+
 async function startRecording() {
     // 请求麦克风权限
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -19,39 +31,33 @@ async function startRecording() {
 
     // 创建 MediaRecorder 实例
     mediaRecorder = new MediaRecorder(stream, { mimeType });
+    recordedChunks = [];
 
-    // 其余录音逻辑
     mediaRecorder.ondataavailable = (event) => {
         recordedChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(recordedChunks);
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        // 加载波形到 Wavesurfer
+        waveSurfer.load(audioUrl);
+
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = audioUrl;
+        document.getElementById('audioContainer').appendChild(audioElement);
+
+        document.getElementById('status').textContent = '状态: 录音已停止';
     };
 
     mediaRecorder.start();
     document.getElementById('status').textContent = '状态: 正在录音';
 }
 
-// 停止录音并保存音频文件
 function stopRecording() {
-    mediaRecorder.stop();
-
-    mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audioElement = document.createElement('audio');
-        audioElement.controls = true;
-        audioElement.src = audioUrl;
-
-        recordedChunks = []; // 清空已录制的音频片段
-
-        // 将音频元素添加到页面
-        const audioContainer = document.getElementById('audioContainer');
-        audioContainer.appendChild(audioElement);
-        document.getElementById('status').textContent = '状态: 录音完成';
-
-        // 调试信息
-        console.log('Audio recording is available for playback:', audioUrl);
-    };
+    if (mediaRecorder) {
+        mediaRecorder.stop();
+    }
 }
-
-// 绑定按钮事件
-document.getElementById('startBtn').addEventListener('click', startRecording);
-document.getElementById('stopBtn').addEventListener('click', stopRecording);
