@@ -50,10 +50,12 @@ async function startRecording() {
         document.getElementById('audioContainer').appendChild(audioElement);
 
         document.getElementById('status').textContent = '状态: 录音已停止';
+        document.getElementById('startBtn').style.backgroundColor = ''; // 重置按钮颜色
     };
 
     mediaRecorder.start();
     document.getElementById('status').textContent = '状态: 正在录音';
+    document.getElementById('startBtn').style.backgroundColor = 'green'; // 设置按钮为绿色
 }
 
 function stopRecording() {
