@@ -3,41 +3,30 @@ let recordedChunks = [];
 
 // 获取音频输入权限
 async function startRecording() {
-    // 检查浏览器是否支持获取用户媒体
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('您的浏览器不支持获取用户媒体设备。请使用支持的浏览器。');
+    // 请求麦克风权限
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    // 检查浏览器支持的音频格式
+    let mimeType = '';
+    if (MediaRecorder.isTypeSupported('audio/wav')) {
+        mimeType = 'audio/wav';
+    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+        mimeType = 'audio/webm';
+    } else {
+        alert('您的浏览器不支持录音功能。');
         return;
     }
 
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // 创建 MediaRecorder 实例
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
 
-        let mimeType = '';
-        if (MediaRecorder.isTypeSupported('audio/webm')) {
-            mimeType = 'audio/webm';
-        } else if (MediaRecorder.isTypeSupported('audio/wav')) {
-            mimeType = 'audio/wav';
-        } else {
-            alert('您的浏览器不支持录音功能。');
-            return;
-        }
+    // 其余录音逻辑
+    mediaRecorder.ondataavailable = (event) => {
+        recordedChunks.push(event.data);
+    };
 
-        mediaRecorder = new MediaRecorder(stream, { mimeType });
-
-        mediaRecorder.ondataavailable = (event) => {
-            if (event.data.size > 0) {
-                recordedChunks.push(event.data);
-            }
-        };
-
-        mediaRecorder.start();
-        document.getElementById('status').textContent = '状态: 正在录音';
-        console.log('Recording started');
-    } catch (error) {
-        console.error('Error accessing audio devices:', error);
-        document.getElementById('status').textContent = '状态: 录音失败';
-        alert('无法访问麦克风，请检查设置。');
-    }
+    mediaRecorder.start();
+    document.getElementById('status').textContent = '状态: 正在录音';
 }
 
 // 停止录音并保存音频文件
