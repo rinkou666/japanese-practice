@@ -44,6 +44,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #updateContainer {
+            margin-top: 20px; /* 更新区域的间距 */
+        }
     </style>
 </head>
 <body>
@@ -67,10 +71,23 @@
     <!-- 打开文本的按钮 -->
     <button id="toggle-button">打开文本</button>
 
+    <!-- 更新内容按钮 -->
+    <div id="updateContainer">
+        <button onclick="showUpdate(0)">第一期</button>
+        <button onclick="showUpdate(1)">第二期</button>
+        <button onclick="showUpdate(2)">第三期</button>
+    </div>
+
     <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
 
     <script src="script.js"></script>
     <script>
+        const updates = [
+            `博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます、楽しみすぎて、この日が本当に待ち遠しかったんですけど、今まで私が乗車してきた列車の中で一番豪華な列車になります。金額もね、含めて。そして車両もすっごく豪華なので、楽しみです。ということで、行ってきます。`,
+            `第二期の内容がここに来ます。これは新しい更新のテキストです。`,
+            `第三期の内容がここに来ます。ここでは別の面白い情報を共有します。`
+        ];
+
         const toggleButton = document.getElementById('toggle-button');
         const textDiv = document.getElementById('text');
 
@@ -83,6 +100,12 @@
                 toggleButton.textContent = '打开文本'; // 更改按钮文本
             }
         });
+
+        function showUpdate(index) {
+            textDiv.textContent = updates[index]; // 更新文本内容
+            textDiv.style.display = 'block'; // 显示文本
+            toggleButton.textContent = '隐藏文本'; // 设置按钮文本
+        }
     </script>
 </body>
 </html>
