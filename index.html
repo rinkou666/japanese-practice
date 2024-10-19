@@ -7,69 +7,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f3f0e6; /* 柔和的莫兰迪色系背景 */
             margin: 0;
-            padding: 20px;
+            padding: 10px;
         }
-
-        h1, h2 {
-            color: #5b3a29; /* 深色标题 */
+        a {
+            display: block; /* 每个链接占一行 */
+            margin: 10px 0;
+            padding: 15px;
+            text-align: center;
+            background-color: #e6e6e6; /* 背景颜色 */
+            color: #333; /* 文字颜色 */
+            text-decoration: none; /* 去掉下划线 */
+            border-radius: 5px; /* 圆角 */
         }
-
-        .container {
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #e2d7c3; /* 另一种莫兰迪色系 */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        button {
-            padding: 10px 15px;
-            margin: 5px;
-            background-color: #c2b3a0; /* 按钮颜色 */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #b29b8d; /* 悬停效果 */
-        }
-
-        #text {
-            margin-top: 20px;
-            display: none; /* 初始隐藏文本 */
-            font-size: 18px;
+        a:hover {
+            background-color: #d1d1d1; /* 悬停效果 */
         }
     </style>
 </head>
 <body>
     <h1>日语跟读练习</h1>
-
-    <div class="container">
-        <h2>选择跟读练习</h2>
-        <button onclick="showPractice(1)">第一期</button>
-        <button onclick="showPractice(2)">第二期</button>
-        <button onclick="showPractice(3)">第三期</button>
-    </div>
-
-    <div id="text"></div> <!-- 用于显示选中的跟读练习内容 -->
-
-    <script>
-        const practices = {
-            1: "博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます...",
-            2: "第二期的跟读内容在这里...",
-            3: "第三期的跟读内容在这里..."
-        };
-
-        function showPractice(phase) {
-            const textDiv = document.getElementById('text');
-            textDiv.textContent = practices[phase]; // 显示对应期的文本
-            textDiv.style.display = 'block'; // 显示文本内容
-        }
-    </script>
+    <a href="episode1.html">第一期</a>
+    <a href="episode2.html">第二期</a>
+    <a href="episode3.html">第三期</a>
 </body>
 </html>
