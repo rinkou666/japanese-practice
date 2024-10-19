@@ -28,6 +28,22 @@
             font-size: 20px;
             color: red;
         }
+
+        #text {
+            display: none; /* 初始隐藏文本 */
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        #toggle-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -42,8 +58,31 @@
         <button id="stopBtn" onclick="stopRecording()">停止录音</button>
     </div>
     <div id="status">状态: 未录音</div>
+    
+    <!-- 文本内容 -->
+    <div id="text">
+        这是日语跟读的文本内容。
+    </div>
+    
+    <!-- 打开文本的按钮 -->
+    <button id="toggle-button">打开文本</button>
+
     <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
 
     <script src="script.js"></script>
+    <script>
+        const toggleButton = document.getElementById('toggle-button');
+        const textDiv = document.getElementById('text');
+
+        toggleButton.addEventListener('click', function() {
+            if (textDiv.style.display === 'none') {
+                textDiv.style.display = 'block';
+                toggleButton.textContent = '隐藏文本'; // 更改按钮文本
+            } else {
+                textDiv.style.display = 'none';
+                toggleButton.textContent = '打开文本'; // 更改按钮文本
+            }
+        });
+    </script>
 </body>
 </html>
