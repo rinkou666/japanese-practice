@@ -9,37 +9,100 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 10px;
+            background-color: #F5F5F5; /* 浅灰色背景 */
+            color: #333; /* 深灰色文本 */
         }
-        #text {
-            display: none; /* 默认隐藏文本 */
-            margin-top: 20px;
+
+        h1 {
+            color: #4E5B73; /* 低饱和度蓝色 */
         }
+
         button {
+            height: 50px; /* 增加按钮高度 */
+            width: 48%; /* 按钮宽度设置为 48% */
+            margin: 0 1%; /* 按钮之间的间距 */
+            background-color: #6A9A92; /* 低饱和度绿色 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5B8B83; /* 按钮悬停颜色 */
+        }
+
+        #buttonContainer {
+            display: flex; /* 使用 flexbox 布局 */
+            justify-content: center; /* 按钮居中对齐 */
+            margin-bottom: 10px; /* 按钮和播放器之间的间距 */
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 20px;
+            color: red;
+        }
+
+        #text {
+            display: none; /* 初始隐藏文本 */
             margin-top: 10px;
+            font-size: 18px;
+            color: #555; /* 中灰色文本 */
+        }
+
+        #toggle-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007BFF; /* 蓝色按钮 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #toggle-button:hover {
+            background-color: #0056b3; /* 蓝色按钮悬停颜色 */
         }
     </style>
 </head>
 <body>
     <h1>日语跟读练习 - 第一期</h1>
     <audio id="audioPlayer" controls>
-        <source src="episode1.mp3" type="audio/mpeg">
+        <source src="example.mp3" type="audio/mpeg">
         你的浏览器不支持音频元素。
     </audio>
     <br>
-    <button onclick="toggleText()">打开文本</button>
-    <div id="text">
-        <p>博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます、楽しみすぎて...</p>
+    <div id="buttonContainer">
+        <button id="startBtn" onclick="startRecording()">开始录音</button>
+        <button id="stopBtn" onclick="stopRecording()">停止录音</button>
     </div>
+    <div id="status">状态: 未录音</div>
+    
+    <!-- 文本内容 -->
+    <div id="text">
+        博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます、楽しみすぎて、この日が本当に待ち遠しかったんですけど、今まで私が乗車してきた列車の中で一番豪華な列車になります。金額もね、含めて。そして車両もすっごく豪華なので、楽しみです。ということで、行ってきます。或る列車は主に土、日、月曜日に運行されており、博多駅と由布院駅間を一日一往復三時間かけて結びます。そしてこの乗車時間にはなんとコース料理を満喫できるという夢のような列車ですよね。こちらは切符ではなく、旅行商品としての販売になります。一際輝く、ゴールドの列車がやってきました。憧れのお城が走ってきたよう、渋めのお顔かと思いきやハートや星などが散りばめられ、アンティークっぽくて、かわいいです。
+    </div>
+    
+    <!-- 打开文本的按钮 -->
+    <button id="toggle-button">打开文本</button>
 
+    <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
+
+    <script src="script.js"></script>
     <script>
-        function toggleText() {
-            const textDiv = document.getElementById('text');
+        const toggleButton = document.getElementById('toggle-button');
+        const textDiv = document.getElementById('text');
+
+        toggleButton.addEventListener('click', function() {
             if (textDiv.style.display === 'none') {
-                textDiv.style.display = 'block'; // 显示文本
+                textDiv.style.display = 'block';
+                toggleButton.textContent = '隐藏文本'; // 更改按钮文本
             } else {
-                textDiv.style.display = 'none'; // 隐藏文本
+                textDiv.style.display = 'none';
+                toggleButton.textContent = '打开文本'; // 更改按钮文本
             }
-        }
+        });
     </script>
 </body>
 </html>
