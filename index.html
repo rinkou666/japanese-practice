@@ -3,32 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日语跟读练习</title>
+    <title>日本語シャドーイング練習</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 0;
+            background-color: #F0F0F0; /* 浅灰色背景 */
+            color: #333; /* 深灰色文本 */
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            height: 100vh; /* 使页面占满全高 */
         }
+
+        h1 {
+            font-size: 36px; /* 标题字体大小 */
+            text-align: center; /* 居中对齐 */
+            color: #000; /* 黑色字体 */
+        }
+
         a {
-            display: block; /* 每个链接占一行 */
-            margin: 10px 0;
-            padding: 15px;
-            text-align: center;
-            background-color: #e6e6e6; /* 背景颜色 */
-            color: #333; /* 文字颜色 */
-            text-decoration: none; /* 去掉下划线 */
-            border-radius: 5px; /* 圆角 */
+            text-decoration: none; /* 移除链接下划线 */
+            color: #007BFF; /* 蓝色链接 */
+            font-size: 18px; /* 链接字体大小 */
         }
+
         a:hover {
-            background-color: #d1d1d1; /* 悬停效果 */
+            text-decoration: underline; /* 悬停时添加下划线 */
         }
     </style>
 </head>
 <body>
-    <h1>日语跟读练习</h1>
-    <a href="episode1.html">第一期</a>
-    <a href="episode2.html">第二期</a>
-    <a href="episode3.html">第三期</a>
+    <h1>日本語シャドーイング練習</h1>
+    <div>
+        <a href="episode1.html">进入第一期练习</a> <!-- 链接到第一期练习页面 -->
+        <br>
+        <a href="episode2.html">进入第二期练习</a> <!-- 链接到第二期练习页面（如果有的话） -->
+        <br>
+        <a href="episode3.html">进入第三期练习</a> <!-- 链接到第三期练习页面（如果有的话） -->
+    </div>
 </body>
 </html>
