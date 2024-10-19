@@ -7,104 +7,68 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f3f0e6; /* 柔和的莫兰迪色系背景 */
             margin: 0;
-            padding: 10px;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #5b3a29; /* 深色标题 */
+        }
+
+        .container {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #e2d7c3; /* 另一种莫兰迪色系 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         button {
-            height: 50px; /* 增加按钮高度 */
-            width: 48%; /* 按钮宽度设置为 48% */
-            margin: 0 1%; /* 按钮之间的间距 */
-        }
-
-        #buttonContainer {
-            display: flex; /* 使用 flexbox 布局 */
-            justify-content: center; /* 按钮居中对齐 */
-            margin-bottom: 10px; /* 按钮和播放器之间的间距 */
-        }
-
-        #status {
-            margin-top: 20px;
-            font-size: 20px;
-            color: red;
-        }
-
-        #text {
-            display: none; /* 初始隐藏文本 */
-            margin-top: 10px;
-            font-size: 18px;
-        }
-
-        #toggle-button {
-            margin-top: 10px;
             padding: 10px 15px;
-            background-color: #007BFF;
+            margin: 5px;
+            background-color: #c2b3a0; /* 按钮颜色 */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        #updateContainer {
-            margin-top: 20px; /* 更新区域的间距 */
+        button:hover {
+            background-color: #b29b8d; /* 悬停效果 */
+        }
+
+        #text {
+            margin-top: 20px;
+            display: none; /* 初始隐藏文本 */
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
     <h1>日语跟读练习</h1>
-    <audio id="audioPlayer" controls>
-        <source src="example.mp3" type="audio/mpeg">
-        你的浏览器不支持音频元素。
-    </audio>
-    <br>
-    <div id="buttonContainer">
-        <button id="startBtn" onclick="startRecording()">开始录音</button>
-        <button id="stopBtn" onclick="stopRecording()">停止录音</button>
-    </div>
-    <div id="status">状态: 未录音</div>
-    
-    <!-- 文本内容 -->
-    <div id="text">
-        博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます、楽しみすぎて、この日が本当に待ち遠しかったんですけど、今まで私が乗車してきた列車の中で一番豪華な列車になります。金額もね、含めて。そして車両もすっごく豪華なので、楽しみです。ということで、行ってきます。或る列車は主に土、日、月曜日に運行されており、博多駅と由布院駅間を一日一往復三時間かけて結びます。そしてこの乗車時間にはなんとコース料理を満喫できるという夢のような列車ですよね。こちらは切符ではなく、旅行商品としての販売になります。一際輝く、ゴールドの列車がやってきました。憧れのお城が走ってきたよう、渋めのお顔かと思いきやハートや星などが散りばめられ、アンティークっぽくて、かわいいです。
-    </div>
-    
-    <!-- 打开文本的按钮 -->
-    <button id="toggle-button">打开文本</button>
 
-    <!-- 更新内容按钮 -->
-    <div id="updateContainer">
-        <button onclick="showUpdate(0)">第一期</button>
-        <button onclick="showUpdate(1)">第二期</button>
-        <button onclick="showUpdate(2)">第三期</button>
+    <div class="container">
+        <h2>选择跟读练习</h2>
+        <button onclick="showPractice(1)">第一期</button>
+        <button onclick="showPractice(2)">第二期</button>
+        <button onclick="showPractice(3)">第三期</button>
     </div>
 
-    <div id="audioContainer"></div> <!-- 用于显示录音的音频播放器 -->
+    <div id="text"></div> <!-- 用于显示选中的跟读练习内容 -->
 
-    <script src="script.js"></script>
     <script>
-        const updates = [
-            `博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます、楽しみすぎて、この日が本当に待ち遠しかったんですけど、今まで私が乗車してきた列車の中で一番豪華な列車になります。金額もね、含めて。そして車両もすっごく豪華なので、楽しみです。ということで、行ってきます。`,
-            `第二期の内容がここに来ます。これは新しい更新のテキストです。`,
-            `第三期の内容がここに来ます。ここでは別の面白い情報を共有します。`
-        ];
+        const practices = {
+            1: "博多駅5番ホームに今います。ということで、本日はここから『或る列車』に乗って、由布院まで向かいます...",
+            2: "第二期的跟读内容在这里...",
+            3: "第三期的跟读内容在这里..."
+        };
 
-        const toggleButton = document.getElementById('toggle-button');
-        const textDiv = document.getElementById('text');
-
-        toggleButton.addEventListener('click', function() {
-            if (textDiv.style.display === 'none') {
-                textDiv.style.display = 'block';
-                toggleButton.textContent = '隐藏文本'; // 更改按钮文本
-            } else {
-                textDiv.style.display = 'none';
-                toggleButton.textContent = '打开文本'; // 更改按钮文本
-            }
-        });
-
-        function showUpdate(index) {
-            textDiv.textContent = updates[index]; // 更新文本内容
-            textDiv.style.display = 'block'; // 显示文本
-            toggleButton.textContent = '隐藏文本'; // 设置按钮文本
+        function showPractice(phase) {
+            const textDiv = document.getElementById('text');
+            textDiv.textContent = practices[phase]; // 显示对应期的文本
+            textDiv.style.display = 'block'; // 显示文本内容
         }
     </script>
 </body>
