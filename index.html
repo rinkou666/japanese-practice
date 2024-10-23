@@ -32,8 +32,8 @@
         }
 
         button {
-            background-color: #C9A3A7; /* 按钮颜色，灰粉色 */
-            color: #F0EDE5; /* 按钮文本颜色，米白色 */
+            background-color: #F0C800; /* 按钮颜色，黄色，匹配图片背景 */
+            color: #000000; /* 按钮文本颜色，黑色 */
             border: none; /* 无边框 */
             border-radius: 5px; /* 圆角 */
             padding: 12px 20px; /* 内边距 */
@@ -42,16 +42,22 @@
         }
 
         button:hover {
-            background-color: #B9A297; /* 悬停时按钮颜色变为棕灰色 */
+            background-color: #E5B700; /* 悬停时按钮颜色稍微加深 */
         }
 
         a {
             text-decoration: none; /* 移除链接下划线 */
-            color: #F0EDE5; /* 按钮文本颜色 */
+            color: #000000; /* 按钮文本颜色 */
+        }
+
+        img {
+            max-width: 100px; /* 图片最大宽度 */
+            margin-bottom: 20px; /* 图片与标题之间的间距 */
         }
     </style>
 </head>
 <body>
+    <img src="logo.png" alt="Logo"> <!-- 这里是图片 -->
     <h1>日本語シャドーイング練習</h1>
     <div class="button-container">
         <a href="episode1.html"><button>进入第一期练习</button></a>
