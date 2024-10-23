@@ -9,8 +9,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #F5F5F5; /* 背景颜色，灰绿色 */
-            color: grey; /* 深灰色文本 */
+            background-color: #FFFFFF; /* 白色背景 */
+            color: #000000; /* 黑色文本 */
             display: flex;
             flex-direction: column; /* 垂直排列 */
             justify-content: center; /* 垂直居中 */
@@ -22,7 +22,7 @@
             font-size: 48px; /* 标题字体大小 */
             font-weight: bold; /* 加粗 */
             text-align: center; /* 居中对齐 */
-            color: #4F4F4F; /* 深灰色字体 */
+            color: #000000; /* 黑色字体 */
             margin-bottom: 30px; /* 标题与按钮之间的间距 */
         }
 
@@ -32,22 +32,23 @@
         }
 
         button {
-            background-color: #F0C800; /* 按钮颜色，黄色，匹配图片背景 */
+            background-color: transparent; /* 透明背景 */
             color: #000000; /* 按钮文本颜色，黑色 */
-            border: none; /* 无边框 */
+            border: 2px solid #000000; /* 黑色边框 */
             border-radius: 5px; /* 圆角 */
             padding: 12px 20px; /* 内边距 */
             cursor: pointer; /* 鼠标悬停时显示手形 */
             font-size: 20px; /* 按钮字体大小 */
+            outline: none; /* 去掉按钮的点击轮廓 */
         }
 
         button:hover {
-            background-color: #E5B700; /* 悬停时按钮颜色稍微加深 */
+            background-color: #f0f0f0; /* 悬停时按钮背景变为淡灰色 */
         }
 
         a {
             text-decoration: none; /* 移除链接下划线 */
-            color: #000000; /* 按钮文本颜色 */
+            color: #000000; /* 链接文本颜色，黑色 */
         }
 
         img {
@@ -57,7 +58,7 @@
     </style>
 </head>
 <body>
-    <img src="logo.png" alt="Logo"> <!-- 这里是图片 -->
+    <img src="notion-avatar-1729602333780.png" alt="Logo"> <!-- 这里是图片 -->
     <h1>日本語シャドーイング練習</h1>
     <div class="button-container">
         <a href="episode1.html"><button>进入第一期练习</button></a>
