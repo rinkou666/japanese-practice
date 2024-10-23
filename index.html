@@ -32,15 +32,16 @@
         }
 
         button {
-            background-color: #d3d3d3; /* 按钮灰色背景 */
+            background-color: #e0e0e0; /* 按钮背景颜色柔和的灰色 */
             color: #000000; /* 按钮文本颜色，黑色 */
-            border: 2px solid #000000; /* 黑色边框 */
-            border-radius: 5px; /* 圆角 */
-            padding: 12px 20px; /* 内边距 */
+            border: none; /* 无边框 */
+            border-radius: 25px; /* 圆角更大 */
+            padding: 12px 25px; /* 内边距 */
             cursor: pointer; /* 鼠标悬停时显示手形 */
             font-size: 20px; /* 按钮字体大小 */
             font-family: 'Comic Sans MS', cursive, sans-serif; /* 手写体 */
             outline: none; /* 去掉按钮的点击轮廓 */
+            transition: background-color 0.3s; /* 添加背景色变化效果 */
         }
 
         button:hover {
@@ -59,7 +60,7 @@
     </style>
 </head>
 <body>
-    <img src="notion-avatar-1729602333780.png" alt="Logo"> <!-- 这里是图片 -->
+    <img src="image/logo.png" alt="Logo"> <!-- 图片路径为 image/logo.png -->
     <h1>日本語シャドーイング練習</h1>
     <div class="button-container">
         <a href="episode1.html"><button>第一期</button></a>
